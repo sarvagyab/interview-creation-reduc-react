@@ -11,7 +11,7 @@ const NewInterview = (props) => {
     }
 
     return(
-        <InterviewForm fetchData={fetchData} method="POST" path="http://localhost:3000/interviews.json" />
+        <InterviewForm heading="Create New Interview" buttonText="Create" fetchData={fetchData} method="POST" path="http://localhost:3000/interviews.json" />
     );
 }
  

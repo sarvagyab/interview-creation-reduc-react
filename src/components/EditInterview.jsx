@@ -8,11 +8,19 @@ import InterviewForm from './common/InterviewForm';
 const EditInterview = (props) => {
 
     let {id} = useParams();
+    const resume = {};
+
+    // ${
+    //     interviewDetails.resume?`Uploaded Resume - <a href="${interviewDetails.resume}">${interviewDetails.interview.resume_file_name}</a>`:"No Resume Currently Provided"
+    // }
 
     const fetchData = async ({setUsersList,setInterviewee,setInterviewers,setDesignation,setStartTime,setStartDate,setEndTime})=>{
         let usersList = await GET(`http://localhost:3000/users.json`);
         let interviewDetails = await GET(`http://localhost:3000/interviews/${id}.json`);
         
+        resume.link = interviewDetails.resume;
+        resume.fileName = interviewDetails.interview.resume_file_name;
+
         setUsersList(usersList);
 
         setInterviewee(interviewDetails.interview.user_id);
@@ -24,7 +32,7 @@ const EditInterview = (props) => {
     }
 
     return(
-        <InterviewForm fetchData={fetchData} method="PATCH" path={`http://localhost:3000/interviews/${id}.json`} />
+        <InterviewForm heading="Edit Interview" buttonText="Edit" resume={resume} fetchData={fetchData} method="PATCH" path={`http://localhost:3000/interviews/${id}.json`} />
     );
 }
  

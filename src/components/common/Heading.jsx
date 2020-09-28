@@ -1,5 +1,5 @@
 import React, {Fragment} from 'react';
-import Notification from './Notification'
+// import Notification from './Notification'
 
 const Heading = ({text,errors,notice}) => {
     return ( 

@@ -30,7 +30,7 @@ const ShowInterview = () => {
                 <Heading text="Interview Details" />
                 <strong>Designation - </strong> {interviewDetails.interview.name }<br />
                 <strong>Interviewee Name - </strong> {interviewDetails.interviewee.name }
-                { interviewDetails.resume?("<strong><a href= " + interviewDetails.resume + ">Resume</a></strong>"):"" }<br />
+                { interviewDetails.resume?(<strong><a href= {interviewDetails.resume}> Resume</a></strong>):"" }<br />
 
                 <strong>Date - </strong> {Parser.parseDate(interviewDetails.interview.start_time)}<br />
                 <strong>Timings - </strong> {Parser.parseTime(interviewDetails.interview.start_time)} -  {Parser.parseTime(interviewDetails.interview.end_time)}<br />
