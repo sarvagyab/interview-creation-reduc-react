@@ -1,6 +1,9 @@
 import React, { Fragment } from 'react';
 
 const Notification = ({errors,notice}) => {
+    // const [errors,setErrors] = useState([]);
+    // const [notice,setNotice] = useState();
+
     return ( 
         <Fragment>
             <div className="notice">
@@ -12,7 +15,7 @@ const Notification = ({errors,notice}) => {
                 </ul>
             </div>
         </Fragment>
-     );
+    );
 }
  
 export default Notification;

@@ -1,6 +1,7 @@
 import React, { useState, Fragment, useEffect } from 'react';
 import {Input,Button,Selection} from './Input'
 import Heading from './Heading'
+import Notification from './Notification'
 
 const InterviewForm = (props) => {
 
@@ -12,8 +13,11 @@ const InterviewForm = (props) => {
     const [interviewers,setInterviewers] = useState([]);
     const [usersList,setUsersList] = useState([]);
     const [errors,setErrors] = useState([]);
+    const [notice,setNotice] = useState();
     
-    
+    useEffect(()=>{
+        props.fetchData({setUsersList,setInterviewee,setInterviewers,setDesignation,setStartDate,setStartTime,setEndTime});
+    },[]);
     
     const handleChange = ({currentTarget})=>{
         console.log(currentTarget.name,currentTarget.value)
@@ -22,7 +26,6 @@ const InterviewForm = (props) => {
         if(currentTarget.name === 'start_time')setStartTime(currentTarget.value);
         if(currentTarget.name === 'end_time')setEndTime(currentTarget.value);
         if(currentTarget.name === 'interviewee')setInterviewee(currentTarget.value);
-        // console.log((Array.from(currentTarget.selectedOptions).map(obj=>obj.value)))
         if(currentTarget.name === 'interviewers')setInterviewers(Array.from(currentTarget.selectedOptions).map(obj=>obj.value));
     }
 
@@ -36,19 +39,32 @@ const InterviewForm = (props) => {
         FD.set('start_time',startTime);
         FD.set('end_time',endTime);
         FD.set('interviewee',interviewee);
-        FD.set('interviewers[]',interviewers);
-        console.log(FD.get('name'));
-        sendForm(FD);
+        interviewers.map(interviewer=>FD.append('interviewers[]',interviewer));
+        sendData(FD);
     }
 
- 
+    async function sendData(FD){
+        const response = await fetch(props.path, {
+            method: props.method,
+            body: FD
+        });
+        const json = await response.json();
+        console.log(json);
+        if(json.errors)
+            setErrors(json.errors)
+        else setErrors([]);
+        
+        if(json.notice)
+            setNotice(json.notice)
+        else setNotice('');
+    }
+    
+
     return ( 
         <Fragment>
             <Heading text="Create a New Interview" />
             <form onSubmit={handleSubmit}>
-                <ul>
-                    {errors.map((err,index)=><li key={index}>{err}</li>)}
-                </ul>
+                <Notification notice={notice} errors={errors} />
                 <Input name="name" label="Designation" placeholder="Designation" type="text" value={designation} onChange={handleChange} />
                 <Input name="start_date" label="Interview Date" type="date" value={startDate} onChange={handleChange} />
                 <Input name="start_time" label="Start Time" type="time" value={startTime} onChange={handleChange}/>
