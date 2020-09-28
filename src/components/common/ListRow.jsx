@@ -2,7 +2,7 @@ import React from 'react';
 import Parser from '../../utilities/parser'
 import Actions from './Actions'
 
-const InterviewShort = (props) => {
+const ListRow = (props) => {
     const {interview,Interviewees} =  props;
     return ( 
     <tr>
@@ -15,4 +15,4 @@ const InterviewShort = (props) => {
     );
 }
  
-export default InterviewShort;
+export default ListRow;

@@ -1,13 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import GET from '../utilities/GET';
-import InterviewShort from './common/InterviewShort';
+// import ListRow from './common/ListRow';
 import ListHeader from './common/ListHeader';
 import Heading from './common/Heading';
-
+import Notification from './common/Notification'
+import Parser from '../utilities/parser'
+import Actions from './common/Actions'
 
 function ListInterviews(props) {
     const [Interviews, setInterviews] = useState([]);
     const [Interviewees, setInterviewees] = useState({});
+    const [notice,setNotice] = useState('');
+    const [errors,setErrors] = useState([]);
 
     useEffect(() => {
         async function fetchInterviews() {
@@ -28,16 +32,23 @@ function ListInterviews(props) {
 
     if (count === 0)
         return <p>There are no interviews in the database</p>
-    
-    
 
     return (
         <div>
             <Heading text={count + " Interview" + (count !== 1 ? 's' : '')} />
+            <Notification notice={notice} errors={errors} />
             <table className="table">
                 <ListHeader headers={["Designation","Interviewee Name","Date","Timings","Actions"]} />
                 <tbody>
-                    {Interviews.map(interview => <InterviewShort key={interview.id} interview={interview} Interviewees={Interviewees} />)}
+                    {Interviews.map(interview => (
+                    <tr key={interview.id}>
+                        <td>{interview.name}</td>
+                        <td>{Interviewees[interview.user_id].name}</td>
+                        <td>{Parser.parseDate(interview.start_time)}</td>
+                        <td>{Parser.parseTime(interview.start_time)} - {Parser.parseTime(interview.end_time)}</td>
+                        <td><Actions id={interview.id} path="interviews" setNotification={{setErrors,setNotice}} /></td>
+                    </tr>
+                    ))}
                 </tbody>
             </table>
         </div>
