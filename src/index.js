@@ -6,14 +6,14 @@ import * as serviceWorker from './serviceWorker';
 import { BrowserRouter } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.css';
 
-import {createStore, applyMiddleware} from 'redux';
+// import {createStore, applyMiddleware} from 'redux';
 import {Provider} from 'react-redux';
-import thunk from 'redux-thunk';
-import {composeWithDevTools} from 'redux-devtools-extension';
-import rootReducer from './reducers';
+import {configureStore} from '@reduxjs/toolkit';
+// import thunk from 'redux-thunk';
+// import {composeWithDevTools} from 'redux-devtools-extension';
+import rootReducer from './slices/index';
 
-const store = createStore(rootReducer,
-  composeWithDevTools(applyMiddleware(thunk)));
+const store = configureStore({reducer: rootReducer});
 
 
 ReactDOM.render(

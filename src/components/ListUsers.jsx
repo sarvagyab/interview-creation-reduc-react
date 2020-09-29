@@ -1,25 +1,28 @@
 import React, { useState, useEffect } from 'react';
-import GET from '../utilities/GET';
+// import GET from '../utilities/GET';
 // import ListRow from './common/ListRow';
 import ListHeader from './common/ListHeader';
 import Heading from './common/Heading';
 import Notification from './common/Notification'
 import Actions from './common/Actions'
 
+import {fetchUsers,usersSelector} from '../slices/users';
+import {useDispatch, useSelector} from 'react-redux';
+
 function ListInterviews(props) {
-    const [Users, setUsers] = useState([]);
+    // const [Users, setUsers] = useState([]);
     const [notice,setNotice] = useState('');
     const [errors,setErrors] = useState([]);
 
-    useEffect(() => {
-        async function fetchUsers() {
-            let users = await GET(`http://localhost:3000/users.json/`);
-            setUsers(users);
-        }
-        fetchUsers();
-    },[]);
+    const dispatch = useDispatch();
+    const {users:Users} = useSelector(usersSelector);
+    
 
-    const count = Users.length;
+    useEffect(() => {
+        dispatch(fetchUsers());
+    }, []); 
+
+    const count = Object.keys(Users).length;
 
     if (count === 0)
         return <p>There are no users in the database</p>
@@ -31,7 +34,7 @@ function ListInterviews(props) {
             <table className="table">
                 <ListHeader headers={["Name","Email","Actions"]} />
                 <tbody>
-                    {Users.map(user => (
+                    {Object.values(Users).map(user => (
                     <tr key={user.id}>
                         <td>{user.name}</td>
                         <td>{user.email}</td>

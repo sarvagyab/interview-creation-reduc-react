@@ -1,17 +1,19 @@
-import React, { useState, Fragment, useEffect } from 'react';
-import GET from '../utilities/GET';
+import React from 'react';
 import InterviewForm from './common/InterviewForm';
+
+import {useDispatch} from 'react-redux';
+import { postInterview } from '../slices/interviews';
 
 const NewInterview = (props) => {
 
-    const fetchData = async ({setUsersList,setInterviewee})=>{
-        let usersList = await GET('http://localhost:3000/users.json');
-        setUsersList(usersList);
-        setInterviewee(`${usersList[0].id}`)
+    const dispatch = useDispatch();
+
+    const sendData = (formData)=>{
+        dispatch(postInterview(formData));
     }
 
     return(
-        <InterviewForm heading="Create New Interview" buttonText="Create" fetchData={fetchData} method="POST" path="http://localhost:3000/interviews.json" />
+        <InterviewForm heading="Create New Interview" buttonText="Create" sendData={sendData} />
     );
 }
  

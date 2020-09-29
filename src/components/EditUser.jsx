@@ -1,20 +1,20 @@
 import React from 'react';
 import UserForm from './common/UserForm';
 import {useParams} from 'react-router-dom';
-import GET from '../utilities/GET';
+import { updateUser } from '../slices/users';
+import { useDispatch } from 'react-redux';
 
 const EditUser = (props) => {
 
     const {id} = useParams();
+    const dispatch = useDispatch();
 
-    const fetchData = async ({setName,setEmail})=>{
-        let user = await GET(`http://localhost:3000/users/${id}.json`);
-        setName(user.name);
-        setEmail(user.email);
+    const sendData = (formData)=>{
+        dispatch(updateUser(formData,id));
     }
 
     return(
-        <UserForm heading="Edit User" buttonText="Edit" fetchData={fetchData} method="PATCH" path={`http://localhost:3000/users/${id}.json`} />
+        <UserForm heading="Edit User" buttonText="Edit" sendData = {sendData} />
     );
 }
  

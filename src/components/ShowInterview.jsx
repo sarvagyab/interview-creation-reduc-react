@@ -1,27 +1,30 @@
-import React, { useEffect, useState, Fragment } from 'react';
+import React, { useEffect, Fragment } from 'react';
 import {useParams} from 'react-router-dom';
-import GET from '../utilities/GET';
 import Parser from '../utilities/parser';
 import Heading from './common/Heading';
 
+import {fetchInterviewFull,interviewFullSelector} from '../slices/interviewFull';
+import {useDispatch, useSelector} from 'react-redux';
 
 const ShowInterview = () => {
 
-    const [interviewDetails,setInterviewDetails] = useState({});
     const {id} = useParams();
-    useEffect(()=>{
-        async function fetchInterview(){
-            let interviewDetails = await GET(`http://localhost:3000/interviews/${id}.json`);
-            setInterviewDetails(interviewDetails);
-        }
-        fetchInterview();
-    },[]);
 
-    if(Object.keys(interviewDetails).length === 0)
+    const dispatch = useDispatch();
+    const {interviewFull:allInterviewDetails} = useSelector(interviewFullSelector);
+    
+    useEffect(()=>{
+        dispatch(fetchInterviewFull(id));
+    },[dispatch]);
+
+    const interviewDetails = allInterviewDetails[id];
+    console.log(allInterviewDetails,'interviewDetails');
+
+    if(!interviewDetails)
         return (
             <Fragment>
                 <Heading text="Interview Details" />
-                <h1>Loading</h1>
+                <label>Loading</label>
             </Fragment>
         );
 

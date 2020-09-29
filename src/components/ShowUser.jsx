@@ -1,21 +1,27 @@
-import React, { useEffect, useState, Fragment } from 'react';
+import React, { useEffect, Fragment } from 'react';
 import {useParams} from 'react-router-dom';
-import GET from '../utilities/GET';
-import Parser from '../utilities/parser';
 import Heading from './common/Heading';
+
+import {fetchUsers,usersSelector} from '../slices/users';
+import {useDispatch, useSelector} from 'react-redux';
 
 
 const ShowInterview = () => {
 
-    const [userDetails,setUserDetails] = useState({});
+    // const [userDetails,setUserDetails] = useState({});
     const {id} = useParams();
-    useEffect(()=>{
-        async function fetchUser(){
-            let userDetails = await GET(`http://localhost:3000/users/${id}.json`);
-            setUserDetails(userDetails);
-        }
-        fetchUser();
-    },[]);
+
+    const dispatch = useDispatch();
+    const {users:Users} = useSelector(usersSelector);
+
+    let userDetails = {};
+    if(Object.keys(Users).length)
+        userDetails = Users[id];
+    
+
+    useEffect(() => {
+        dispatch(fetchUsers());
+    }, [dispatch]); 
 
     if(Object.keys(userDetails).length === 0)
         return (

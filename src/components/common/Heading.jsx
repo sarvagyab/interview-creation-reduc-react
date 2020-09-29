@@ -4,7 +4,7 @@ import React, {Fragment} from 'react';
 const Heading = ({text,errors,notice}) => {
     return ( 
     <Fragment>
-        <h1>{text}</h1> 
+        <h3>{text}</h3> 
         {/* <Notification errors={errors} notice={notice} /> */}
     </Fragment>
     );
