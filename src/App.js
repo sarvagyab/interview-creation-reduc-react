@@ -1,24 +1,32 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
+import NavBar from './components/NavBar';
+import ListInterviews from './components/ListInterviews';
+import EditInterview from './components/EditInterview';
+import NewInterview from './components/NewInterview';
+import ShowInterview from './components/ShowInterview';
+import NewUser from './components/NewUser';
+import EditUser from './components/EditUser';
+import ListUsers from './components/ListUsers';
+import ShowUser from './components/ShowUser';
+import { Switch, Route } from 'react-router-dom';
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <NavBar />
+      <Switch>
+      <Route path="/interviews/new" component={NewInterview} />
+      <Route path="/interviews/:id/edit" component={EditInterview} />
+      <Route path="/interviews/:id" component={ShowInterview} />
+      <Route path="/interviews" component={ListInterviews} />
+
+      <Route path="/users/new" component={NewUser} />
+      <Route path="/users/:id/edit" component={EditUser} />
+      <Route path="/users/:id" component={ShowUser} />
+      <Route path="/users" component={ListUsers} />
+      <Route path="/" component={NewUser} />
+      </Switch>
     </div>
   );
 }
